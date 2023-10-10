@@ -1,14 +1,14 @@
 """ FITNess Tracker
 Copyright (C) 2022 Authors: Dmitry Korepanov, Yandex practikum
 License Free
-Version: 1.2. 2022"""
+Version: 1.2. 2022."""
 
 from dataclasses import dataclass
 
 
 @dataclass
 class InfoMessage:
-    """Information message about trenning. """
+    """Information message about trenning."""
 
     training_type: str
     duration: float
@@ -17,7 +17,7 @@ class InfoMessage:
     calories: float
 
     def get_message(self) -> str:
-        """Creation information message about trenning. """
+        """Creation information message about trenning."""
         output_message: str = (
             f'Тип тренировки: {self.training_type}; '
             f'Длительность: {self.duration:.3f} ч.; '
@@ -28,7 +28,7 @@ class InfoMessage:
 
 
 class Training:
-    """Base class of training. """
+    """Base class of training."""
 
     M_IN_KM: int = 1000
     LEN_STEP: float = 0.65
@@ -44,11 +44,11 @@ class Training:
         self.weight = weight
 
     def get_distance(self) -> float:
-        """To get a distance in km. """
+        """To get a distance in km."""
         return (self.action * self.LEN_STEP) / self.M_IN_KM
 
     def get_mean_speed(self) -> float:
-        """To get average mooving speed. """
+        """To get average mooving speed."""
         distance: float = self.get_distance()
         return distance / self.duration
 
@@ -58,7 +58,7 @@ class Training:
             'Define method in %s.' % (self.__class__.__name__))
 
     def show_training_info(self) -> InfoMessage:
-        """To get info message about comtlitting trenning. """
+        """To get info message about comtlitting trenning."""
         return InfoMessage(self.__class__.__name__,
                            self.duration,
                            self.get_distance(),
@@ -67,13 +67,13 @@ class Training:
 
 
 class Running(Training):
-    """Traning: runnig. """
+    """Traning: runnig."""
 
     CALORIES_SPEED_MULTIPLIER: int = 18
     CALORIES_MEAN_SPEED_SHIFT: int = 20
 
     def get_spent_calories(self) -> float:
-        """To get of given up calories for running. """
+        """To get of given up calories for running."""
         return (
             (
                 (self.CALORIES_SPEED_MULTIPLIER * self.get_mean_speed()
@@ -87,7 +87,7 @@ class Running(Training):
 
 
 class SportsWalking(Training):
-    """Training: walking. """
+    """Training: walking."""
 
     WALKING_CALLORIES_MULTIPLIER_1: float = 0.035
     WALKING_CALLORIES_MULTIPLIER_2: float = 0.029
@@ -99,7 +99,7 @@ class SportsWalking(Training):
         self.height = height
 
     def get_spent_calories(self) -> float:
-        """To get of given up calories for SportsWalking. """
+        """To get of given up calories for SportsWalking."""
         return ((
                 self.WALKING_CALLORIES_MULTIPLIER_1
                 * self.weight
@@ -112,7 +112,7 @@ class SportsWalking(Training):
 
 
 class Swimming(Training):
-    """Training: swimming. """
+    """Training: swimming."""
 
     LEN_STEP: float = 1.38   # redef global variable
     SWIMMING_CALLORIES_MULTIPLIER: float = 1.1
@@ -128,12 +128,12 @@ class Swimming(Training):
         self.count_pool = count_pool
 
     def get_mean_speed(self) -> float:
-        """To get a mean speed for Swimming. """
+        """To get a mean speed for Swimming."""
         return (self.length_pool * self.count_pool
                 / self.M_IN_KM / self.duration)
 
     def get_spent_calories(self) -> float:
-        """To get of given up calories for Swimming. """
+        """To get of given up calories for Swimming."""
         return ((self.get_mean_speed() + self.SWIMMING_CALLORIES_MULTIPLIER)
                 * self.DEGREE_MULTIPLIER * self.weight)
 
@@ -148,7 +148,7 @@ WORKOUTS = {
 
 
 def read_package(workout_type: str, data: list) -> Training:
-    """To read damp from sensors. """
+    """To read damp from sensors."""
     if workout_type not in WORKOUTS:
         raise ValueError(WRONG_WORKOUT.format(
             workout=workout_type,
@@ -164,7 +164,7 @@ def read_package(workout_type: str, data: list) -> Training:
 
 
 def main(training: Training) -> None:
-    """Main function. """
+    """Main function."""
     info = training.show_training_info()
     print(info.get_message())
 
