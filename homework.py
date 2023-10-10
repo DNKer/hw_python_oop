@@ -138,14 +138,29 @@ class Swimming(Training):
                 * self.DEGREE_MULTIPLIER * self.weight)
 
 
+WRONG_WORKOUT = 'Неверный {workout} получили!'
+WRONG_DATA = 'В {workout} хотели {expected}! А дали {given} чисел.'
+WORKOUTS = {
+    'SWM': (Swimming, 5),
+    'RUN': (Running, 3),
+    'WLK': (SportsWalking, 4),
+}
+
+
 def read_package(workout_type: str, data: list) -> Training:
     """To read damp from sensors. """
-    dictionary_types = {
-        'SWM': Swimming,
-        'RUN': Running,
-        'WLK': SportsWalking
-    }
-    return dictionary_types[workout_type](*data)
+    if workout_type not in WORKOUTS:
+        raise ValueError(WRONG_WORKOUT.format(
+            workout=workout_type,
+        ))
+    class_, expected = WORKOUTS[workout_type]
+    if len(data) != expected:
+        raise ValueError(WRONG_DATA.format(
+            workout=workout_type,
+            expected=expected,
+            given=len(data),
+        ))
+    return class_(*data)
 
 
 def main(training: Training) -> None:
